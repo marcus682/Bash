@@ -6,7 +6,7 @@ then
   exit 
 fi 
 
-echo "Profil à utiliser :"
+echo "Profil à utiliser : "
 echo -e "================================"
 echo "[1] profil Simon (1) : Ubuntu 18.04/Gnome Shell"
 echo "[2] profil Simon (2) : Debian 9/Xfce"
