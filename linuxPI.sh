@@ -27,10 +27,32 @@ read -p "Choix : " choixProfil
 ##################################
 if [ "$choixProfil" = "1" ] || [ "$choixProfil" = "5" ] || [ "$choixProfil" = "7" ] || [ "$choixProfil" = "10" ]
 then
+  # activation dépot partenaire si ce n'est pas encore fait
+  sed -i "/^# deb .*partner/ s/^# //" /etc/apt/sources.list
+  
+  # nettoyage puis maj du système
+  apt autoremove --purge -y && apt clean
+  apt update && apt full-upgrade -y
 
-
-
-
+  # outils utiles
+  apt install curl net-tools git gdebi openjdk-8-jre numlockx flatpak screenfetch -y
+  # éditeur/bureautique
+  apt install vim libreoffice libreoffice-l10n-fr libreoffice-help-fr libreoffice-templates evince -y
+  echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | /usr/bin/debconf-set-selections | apt install ttf-mscorefonts-installer -y
+  # codecs
+  apt install x264 x265 -y
+  # internet
+  apt install firefox firefox-locale-fr chromium-browser chromium-browser-l10n-fr pidgin transmission-gtk -y
+  # multimedia & graphisme
+  apt install vlc gimp gimp-help-fr shutter -y
+  # thème
+  apt install arc-thene numix-blue-gtk-theme numix-gtk-theme numix-icon-theme breeze-icon-theme breeze-cursor-theme -y
+  # désactivation message d'erreurs
+  sed -i 's/^enabled=1$/enabled=0/' /etc/default/apport
+  # inutile dans tous les cas
+  apt purge ubuntu-web-launchers -y #icone amazon
+  # optimisation swap
+  echo vm.swappiness=5 | tee /etc/sysctl.d/99-swappiness.conf 
 fi
 
 ##################################
