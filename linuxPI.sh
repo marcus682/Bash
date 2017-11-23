@@ -27,6 +27,7 @@ read -p "Choix : " choixProfil
 ##################################
 if [ "$choixProfil" = "1" ] || [ "$choixProfil" = "5" ] || [ "$choixProfil" = "7" ] || [ "$choixProfil" = "10" ]
 then
+  export DEBIAN_FRONTEND="noninteractive" #permet d'automatiser l'installation de certains logiciels
   # activation dépot partenaire si ce n'est pas encore fait
   sed -i "/^# deb .*partner/ s/^# //" /etc/apt/sources.list
   
@@ -35,7 +36,7 @@ then
   apt update && apt full-upgrade -y
 
   # outils utiles
-  apt install curl net-tools git gdebi openjdk-8-jre numlockx flatpak screenfetch -y
+  apt install curl net-tools git gdebi openjdk-8-jre numlockx flatpak screenfetch debconf-utils -y
   # éditeur/bureautique
   apt install vim libreoffice libreoffice-l10n-fr libreoffice-help-fr libreoffice-templates evince -y
   echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | /usr/bin/debconf-set-selections | apt install ttf-mscorefonts-installer -y
@@ -60,6 +61,7 @@ fi
 ##################################
 if [ "$choixProfil" = "2" ] || [ "$choixProfil" = "6" ] || [ "$choixProfil" = "11" ]
 then
+  export DEBIAN_FRONTEND="noninteractive" #permet d'automatiser l'installation de certains logiciels
   # activation des dépots utiles
   wget https://raw.githubusercontent.com/sibe39/linux_distrib/master/debian9-sources.list 
   mv -f debian9-sources.list /etc/apt/sources.list && dpkg --add-architecture i386 && apt update
@@ -69,7 +71,7 @@ then
   apt update && apt full-upgrade -y
 
   # outils utiles
-  apt install curl net-tools git openjdk-8-jre numlockx flatpak screenfetch -y
+  apt install curl net-tools git openjdk-8-jre numlockx flatpak screenfetch debconf-utils -y
   # éditeur/bureautique
   apt install vim libreoffice libreoffice-l10n-fr libreoffice-help-fr evince -y
   echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | /usr/bin/debconf-set-selections | apt install ttf-mscorefonts-installer -y
