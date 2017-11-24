@@ -43,7 +43,7 @@ then
   # codecs
   apt install x264 x265 -y
   # internet
-  apt install firefox firefox-locale-fr chromium-browser chromium-browser-l10n-fr pidgin transmission-gtk -y
+  apt install firefox firefox-locale-fr chromium-browser chromium-browser-l10n-fr pidgin transmission-gtk thunderbird thunderbird-locale-fr -y
   # multimedia & graphisme
   apt install vlc gimp gimp-help-fr shutter -y
   # thème
@@ -119,8 +119,87 @@ fi
 ## spécifique profil 1 sur Ubuntu avec Gnome Shell
 if [ "$choixProfil" = "1" ] 
 then
+  #optimisation
+  mv /snap /home/ && ln -s /home/snap /snap #déportage snappy dans /home pour alléger racine (/ et /home séparé)
+  swapoff /swapfile && rm /swapfile && sed -i -e '/.swapfile*/d' /etc/fstab #désactivation swap
+  sed -ri 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=2/g' /etc/default/grub && mkdir /boot/old && mv /boot/memtest86* /boot/old/ ; update-grub #pour grub
+  gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' #comportement gnome
+  
+  #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
+  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+ 
+  #cmd supplémentaire2 : pour contournement temporaire wayland pour des applis comme gparted... (ex utilisation : fraude gparted)
+  echo "#contournement wayland pour certaines applis
+  fraude(){ 
+    xhost + && sudo \$1 && xhost -
+    }" >> /home/$SUDO_USER/.bashrc
+  
+  su $SUDO_USER ; source /home/$SUDO_USER/.bashrc ; exit
+     
 
+  apt install dconf-editor gnome-tweak-tool folder-color gnome-packagekit synaptic -y
+  apt install htop gparted ppa-purge unrar ubuntu-restricted-extras ffmpegthumbnailer -y
+  
+  # Création répertoire extension pour l'ajout d'extension supplémentaire pour l'utilisateur principal
+  mkdir /home/$SUDO_USER/.local/share/gnome-shell/extensions && chown -R $SUDO_USER /home/$SUDO_USER/.local/share/gnome-shell/extensions
 
+  # passage firefox vers n+1 (béta)
+  add-apt-repository ppa:mozillateam/firefox-next -y  && apt update && apt upgrade -y
+  # ajout déveloper édition (indépendant)
+  flatpak install --from https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxDevEdition.flatpakref -y
+  # autres navigateurs
+  apt install chromium-browser torbrowser-launcher -y
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && apt update && apt install google-chrome-stable -y
+
+  # outil web
+  apt install pidgin pidgin-plugin-pack polari filezilla deluge grsync subdownloader chrome-gnome-shell -y
+  snap install discord dino quasselclient-moon127 && snap install electrum --classic
+  flatpak install --from https://flathub.org/repo/appstream/com.github.JannikHv.Gydl.flatpakref -y
+  wget https://repo.skype.com/latest/skypeforlinux-64.deb && dpkg -i skypeforlinux-64.deb ; apt install -fy ; rm skypeforlinux-64.deb
+  
+  
+  # multimedia
+  apt install vlc-plugin-vlsub vlc-plugin-visualization gnome-mpv quodlibet gnome-twitch handbrake winff openshot -y
+  snap install vlc #ajout d'une 2ème version de VLC indépendante (3.0dev)
+  flatpak install --from https://flathub.org/repo/appstream/de.haeckerfelix.gradio.flatpakref -y
+  wget https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.8.0/molotov && mv molotov molotov.AppImage
+  wget http://nux87.free.fr/script-postinstall-ubuntu/appimage/avidemux2.7.0.AppImage
+  wget https://download.kde.org/unstable/kdenlive/16.12/linux/Kdenlive-16.12-rc-x86_64.AppImage
+  wget http://download.opensuse.org/repositories/home:/ocfreitag/AppImage/owncloud-client-latest-x86_64.AppImage
+  wget https://github.com/amilajack/popcorn-time-desktop/releases/download/v0.0.6/PopcornTime-0.0.6-x86_64.AppImage
+  mkdir ./appimages ; mv *.AppImage ./appimages/ ; chmod -R +x ./appimages
+
+  
+  # graphisme/audio
+  apt install pinta inkscape darktable audacity mixxx lame -y
+  
+  # supplément bureautique
+  apt install geary pdfmod -y
+  snap install mailspring
+  flatpak install --from https://flathub.org/repo/appstream/org.gnome.FeedReader.flatpakref -y
+  flatpak install --from https://flathub.org/repo/appstream/com.github.philip_scott.notes-up.flatpakref -y
+  
+  # utilitaires sup
+  apt install kazam simplescreenrecorder virtualbox keepassx screenfetch asciinema ncdu screen rclone -y
+  add-apt-repository "deb http://ppa.launchpad.net/gencfsm/ppa/ubuntu xenial main" -y && apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 6A0344470F68ADCA && apt update && apt install gnome-encfs-manager -y
+  flatpak install --from https://flathub.org/repo/appstream/org.baedert.corebird.flatpakref -y
+
+  # dev
+  apt install emacs geany codeblocks codeblocks-contrib 
+  snap install pycharm-community --classic ; snap install atom --classic
+  
+  # gaming
+  apt install steam playonlinux minetest minetest-mod-nether openarena 0ad supertux supertuxkart teeworlds -y
+  wget http://packages.linuxmint.com/pool/import/m/minecraft-installer/minecraft-installer_0.1+r12~ubuntu16.04.1_amd64.deb && dpkg -i minecraft-installer_0.1+r12~ubuntu16.04.1_amd64.deb ; apt install -fy ; rm minecraft-installer_0.1+r12~ubuntu16.04.1_amd64.deb
+  snap install tic-tac-toe rubecube
+  flatpak install --from https://flathub.org/repo/appstream/com.jagex.RuneScape.flatpakref -y   
+  flatpak install --from https://flathub.org/repo/appstream/com.albiononline.AlbionOnline.flatpakref -y
+  
+  # extension
+  apt install gnome-shell-extension-impatience gnome-shell-extension-weather gnome-shell-extension-system-monitor -y
+  
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
 ## spécifique profil 2 sur Debian avec Xfce
