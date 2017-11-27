@@ -36,7 +36,7 @@ then
   apt update && apt full-upgrade -y
 
   # outils utiles
-  apt install curl net-tools git gdebi openjdk-8-jre numlockx flatpak screenfetch debconf-utils -y
+  apt install curl inxi net-tools git gdebi openjdk-8-jre numlockx flatpak screenfetch debconf-utils -y
   # éditeur/bureautique
   apt install vim libreoffice libreoffice-l10n-fr libreoffice-help-fr libreoffice-templates evince -y
   echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | /usr/bin/debconf-set-selections | apt install ttf-mscorefonts-installer -y
@@ -71,7 +71,7 @@ then
   apt update && apt full-upgrade -y
 
   # outils utiles
-  apt install curl net-tools git openjdk-8-jre numlockx flatpak screenfetch debconf-utils -y
+  apt install curl net-tools inxi git openjdk-8-jre numlockx flatpak screenfetch debconf-utils -y
   # éditeur/bureautique
   apt install vim libreoffice libreoffice-l10n-fr libreoffice-help-fr evince -y
   echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | /usr/bin/debconf-set-selections | apt install ttf-mscorefonts-installer -y
@@ -97,7 +97,7 @@ then
   pacman --noconfirm -Syyu
   
   # outils utiles
-  pacman --noconfirm -S curl net-tools git jre8-openjdk numlockx flatpak screenfetch 
+  pacman --noconfirm -S inxi curl net-tools git jre8-openjdk numlockx flatpak screenfetch 
   # éditeur/bureautique
   pacman --noconfirm -S vim libreoffice-fresh libreoffice-fresh-fr evince
   # codecs
