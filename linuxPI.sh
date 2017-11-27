@@ -116,7 +116,7 @@ fi
 # Supplément spécifique suivant profil
 ##################################
 
-## spécifique profil 1 sur Ubuntu avec Gnome Shell
+## spécifique profil 1 sur Ubuntu avec Gnome Shell (Simon)
 if [ "$choixProfil" = "1" ] 
 then
   #optimisation
@@ -148,7 +148,7 @@ then
   # ajout déveloper édition (indépendant)
   flatpak install --from https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxDevEdition.flatpakref -y
   # autres navigateurs
-  apt install chromium-browser torbrowser-launcher -y
+  apt install torbrowser-launcher -y
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && apt update && apt install google-chrome-stable -y
 
   # outil web
@@ -202,18 +202,86 @@ then
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
-## spécifique profil 2 sur Debian avec Xfce
+## spécifique profil 2 sur Debian avec Xfce (Simon)
 if [ "$choixProfil" = "2" ] 
 then
+  ## optimisation
+  #cmd supplémentaire : pour les maj (utilisation : maj)
+  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean ; clear'" >> /home/$SUDO_USER/.bashrc
+  su $SUDO_USER ; source /home/$SUDO_USER/.bashrc ; exit
+   
+  # Utiles 
+  apt install synaptic htop gparted unrar -y
+  
+  # autre navigateur
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && apt update && apt install google-chrome-stable -y
 
+  # outil web
+  apt install pidgin-plugin-pack polari filezilla deluge grsync subdownloader chrome-gnome-shell -y
+  wget https://repo.skype.com/latest/skypeforlinux-64.deb && dpkg -i skypeforlinux-64.deb ; apt install -fy ; rm skypeforlinux-64.deb
+  
+  # multimedia
+  apt install vlc-plugin-vlsub vlc-plugin-visualization gnome-mpv quodlibet handbrake winff openshot -y
+  snap install vlc #ajout d'une 2ème version de VLC indépendante (3.0dev)
+  wget http://nux87.free.fr/script-postinstall-ubuntu/appimage/avidemux2.7.0.AppImage
+  wget https://download.kde.org/unstable/kdenlive/16.12/linux/Kdenlive-16.12-rc-x86_64.AppImage
+  wget http://download.opensuse.org/repositories/home:/ocfreitag/AppImage/owncloud-client-latest-x86_64.AppImage
+  mkdir ./appimages ; mv *.AppImage ./appimages/ ; chmod -R +x ./appimages
 
+  # graphisme/audio
+  apt install pinta inkscape darktable audacity mixxx lame -y
+  
+  # supplément bureautique
+  apt install geary pdfmod -y
+  
+  # utilitaires sup
+  apt install kazam simplescreenrecorder keepassx screenfetch asciinema ncdu screen rclone corebird -y
+
+  # dev
+  apt install emacs geany codeblocks codeblocks-contrib 
+ 
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
-## spécifique profil 3 sur Arch avec Xfce
+## spécifique profil 3 sur Arch avec Xfce (Simon)
 if [ "$choixProfil" = "3" ] 
 then
+  pacman --noconfirm -S htop gparted unrar
+ 
+  # outil web
+  pacman --noconfirm -S hexchat filezilla deluge grsync subdownloader electrum avidemux-qt
+  flatpak install --from https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxDevEdition.flatpakref -y
+  flatpak install --from https://flathub.org/repo/appstream/com.github.JannikHv.Gydl.flatpakref -y
+  flatpak install --from https://flathub.org/repo/appstream/com.discordapp.Discord.flatpakref -y
+  flatpak install --from https://flathub.org/repo/appstream/com.skype.Client.flatpakref -y
+  flatpak install --from https://flathub.org/repo/appstream/org.baedert.corebird.flatpakref -y
+  
+  # multimedia
+  pacman --noconfirm -S mpv quodlibet handbrake winff openshot
+  wget https://download.kde.org/unstable/kdenlive/16.12/linux/Kdenlive-16.12-rc-x86_64.AppImage
+  wget http://download.opensuse.org/repositories/home:/ocfreitag/AppImage/owncloud-client-latest-x86_64.AppImage
+  wget https://github.com/amilajack/popcorn-time-desktop/releases/download/v0.0.6/PopcornTime-0.0.6-x86_64.AppImage
+  mkdir ./appimages ; mv *.AppImage ./appimages/ ; chmod -R +x ./appimages
 
+  
+  # graphisme/audio
+  pacman --noconfirm -S pinta inkscape darktable audacity mixxx lame
+  
+  # supplément bureautique
+  pacman --noconfirm -S geary pdfmod
+  
+  # utilitaires sup
+  pacman --noconfirm -S simplescreenrecorder virtualbox keepassx screenfetch asciinema ncdu screen rclone
 
+  # dev
+  pacman --noconfirm -S emacs geany codeblocks atom
+  
+  # gaming
+  pacman --noconfirm -S minetest supertux supertuxkart teeworlds
+
+  # nettoyage
+  pacman --noconfirm -Sc
 fi
 
 ## spécifique profil 4 : plus tard
@@ -224,14 +292,14 @@ then
 fi
 
 
-## spécifique profil 5 : Ubuntu avec Gnome Shell
+## spécifique profil 5 : Ubuntu avec Gnome Shell (technicien assistance)
 if [ "$choixProfil" = "5" ] 
 then
 
 
 fi
 
-## spécifique profil 6 : Debian avec Xfce
+## spécifique profil 6 : Debian avec Xfce (technicien assistance)
 if [ "$choixProfil" = "6" ] 
 then
 
@@ -239,7 +307,7 @@ then
 fi
 
 
-## spécifique profil 7 : Ubuntu Mate
+## spécifique profil 7 : Ubuntu Mate (etab scolaire)
 if [ "$choixProfil" = "7" ] 
 then
 
