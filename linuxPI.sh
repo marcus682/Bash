@@ -1,4 +1,6 @@
 #!/bin/bash
+# NE PAS UTILISER MERCI !
+
 
 if [ "$UID" -ne "0" ]
 then
@@ -289,33 +291,163 @@ if [ "$choixProfil" = "4" ]
 then
 
 
+
+
+
+#.....................................................
+
+
+
+
+
+
+
 fi
 
 
 ## spécifique profil 5 : Ubuntu avec Gnome Shell (technicien assistance)
 if [ "$choixProfil" = "5" ] 
 then
+  #optimisation
+  mv /snap /home/ && ln -s /home/snap /snap #déportage snappy dans /home pour alléger racine (/ et /home séparé)
+  #swapoff /swapfile && rm /swapfile && sed -i -e '/.swapfile*/d' /etc/fstab #désactivation swap
+  sed -ri 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=2/g' /etc/default/grub && mkdir /boot/old && mv /boot/memtest86* /boot/old/ ; update-grub #pour grub
+  gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' #comportement gnome
+  
+  #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
+  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+ 
+  #cmd supplémentaire2 : pour contournement temporaire wayland pour des applis comme gparted... (ex utilisation : fraude gparted)
+  echo "#contournement wayland pour certaines applis
+  fraude(){ 
+    xhost + && sudo \$1 && xhost -
+    }" >> /home/$SUDO_USER/.bashrc
+  
+  su $SUDO_USER ; source /home/$SUDO_USER/.bashrc ; exit
+     
+  apt install dconf-editor gnome-tweak-tool folder-color gnome-packagekit -y
+  apt install htop gparted ppa-purge unrar ubuntu-restricted-extras -y
+  
+  # Création répertoire extension pour l'ajout d'extension supplémentaire pour l'utilisateur principal
+  mkdir /home/$SUDO_USER/.local/share/gnome-shell/extensions && chown -R $SUDO_USER /home/$SUDO_USER/.local/share/gnome-shell/extensions
 
+  # passage firefox vers n+1 (béta)
+  #add-apt-repository ppa:mozillateam/firefox-next -y  && apt update && apt upgrade -y
+  
+  # ajout déveloper édition (indépendant)
+  flatpak install --from https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxDevEdition.flatpakref -y
 
+  # outil web
+  apt install pidgin pidgin-plugin-pack polari filezilla grsync -y
+  # Teamviewer 8 pour assistance (bien qu'elle soit obsolète)
+  wget http://download.teamviewer.com/download/version_8x/teamviewer_linux.deb && dpkg -i teamviewer_linux.deb ; apt install -fy ; rm teamviewer_linux.deb 
+ 
+  # graphisme
+  apt install pinta inkscape -y
+  
+  # supplément bureautique
+  apt install zim geary pdfmod -y
+  flatpak install --from https://flathub.org/repo/appstream/com.github.philip_scott.notes-up.flatpakref -y #alternative à zim
+  
+  # utilitaires sup
+  apt install kazam virtualbox keepassx keepass2 screenfetch asciinema ncdu screen -y
+
+  # dev
+  apt install geany codeblocks codeblocks-contrib 
+  snap install pycharm-community --classic 
+ 
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
 ## spécifique profil 6 : Debian avec Xfce (technicien assistance)
 if [ "$choixProfil" = "6" ] 
 then
+  #optimisation
+  apt install snapd -y
+  mv /snap /home/ && ln -s /home/snap /snap #déportage snappy dans /home pour alléger racine (/ et /home séparé)
+  #swapoff /swapfile && rm /swapfile && sed -i -e '/.swapfile*/d' /etc/fstab #désactivation swap
+  sed -ri 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=2/g' /etc/default/grub && mkdir /boot/old && mv /boot/memtest86* /boot/old/ ; update-grub #pour grub
 
+  #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
+  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+     
+  apt install htop gparted unrar -y
+  
+  # ajout déveloper édition (indépendant)
+  flatpak install --from https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxDevEdition.flatpakref -y
 
+  # outil web
+  apt install pidgin polari filezilla grsync -y
+  # Teamviewer 8 pour assistance (bien qu'elle soit obsolète)
+  wget http://download.teamviewer.com/download/version_8x/teamviewer_linux.deb && dpkg -i teamviewer_linux.deb ; apt install -fy ; rm teamviewer_linux.deb 
+ 
+  # graphisme
+  apt install pinta inkscape -y
+  
+  # supplément bureautique
+  apt install zim geary pdfmod -y
+  flatpak install --from https://flathub.org/repo/appstream/com.github.philip_scott.notes-up.flatpakref -y #alternative à zim
+  
+  # utilitaires sup
+  apt install kazam virtualbox keepassx keepass2 screenfetch asciinema ncdu screen -y
+
+  # dev
+  apt install geany codeblocks codeblocks-contrib 
+  snap install pycharm-community --classic 
+ 
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
 
 ## spécifique profil 7 : Ubuntu Mate (etab scolaire)
 if [ "$choixProfil" = "7" ] 
 then
+  apt install idle-python3.5 libreoffice-style-breeze sane -y
 
+  #google earth
+  wget --no-check-certificate https://dl.google.com/dl/earth/client/current/google-earth-pro-stable_current_amd64.deb
+  dpkg -i google-earth-pro-stable_current_amd64.deb ; apt install -fy
 
+  #celestia
+  wget https://raw.githubusercontent.com/BionicBeaver/Divers/master/CelestiaBionic.sh ; chmod +x CelestiaBionic.sh
+  ./CelestiaBionic.sh ; rm CelestiaBionic.sh
+ 
+  # drivers imprimantes
+  wget http://www.openprinting.org/download/printdriver/debian/dists/lsb3.2/contrib/binary-amd64/openprinting-gutenprint_5.2.7-1lsb3.2_amd64.deb
+  dpkg -i openprinting-gutenprint_5.2.7-1lsb3.2_amd64.deb ; apt install -fy
+  
+  # java8
+  add-apt-repository "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" -y
+  apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 7B2C3B0889BF5709A105D03AC2518248EEA14886
+  apt update && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections | apt install oracle-java8-installer -y
+  
+  #bureautique
+  apt install libreoffice libreoffice-gtk libreoffice-l10n-fr freeplane scribus gnote xournal cups-pdf -y
+  #web
+  apt install adobe-flashplugin -y
+  #video/audio
+  apt install x264 x265 imagination openshot audacity ffmpeg2theora flac vorbis-tools lame oggvideotools mplayer ogmrip goobox -y
+  #graphisme/photo
+  apt install blender sweethome3d gimp pinta inkscape gthumb mypaint hugin shutter -y
+  #système
+  apt install gparted vim pyrenamer rar unrar htop diodon p7zip-full gdebi -y
+  #wireshark
+  debconf-set-selections <<< "wireshark-common/install-setuid true" ; apt install wireshark -y
+  #math
+  apt install geogebra algobox carmetal scilab -y
+  #science
+  apt install stellarium avogadro -y
+  #prog
+  apt install scratch ghex geany imagemagick gcolor2 python3-pil.imagetk python3-pil traceroute python3-tk -y
+  #gdevelop
+  
+  #nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean -y  
 fi
 
-echo "Pour prendre en compte tous les changements, il faut maintenant redémarrer !"
-read -p "Voulez-vous redémarrer immédiatement ? [o/n] " reboot
+
 if [ "$reboot" = "o" ] || [ "$reboot" = "O" ]
 then
     reboot
