@@ -13,21 +13,26 @@ echo -e "================================"
 echo "[1] profil Simon (1) : Ubuntu 18.04/Gnome Shell"
 echo "[2] profil Simon (2) : Debian 9/Xfce"
 echo "[3] profil Simon (3) : Archlinux/Xfce"
-echo "[4] (plus tard)"
-echo "[5] profil assistance rectorat (1) : Ubuntu 18.04LTS/Gnome Shell"
-echo "[6] profil assistance rectorat (2) : Debian 9/Xfce"
-echo "[7] Etab scolaire : Ubuntu Mate 18.04/Mate"
+echo "[4] profil Simon (4) : Solus/Budgie"
+echo "[5] profil Corinne : LinuxMint/Cinnamon"
+echo "[6] profil assistance rectorat (1) : Ubuntu 18.04LTS/Gnome Shell"
+echo "[7] profil assistance rectorat (2) : Debian 9/Xfce"
+echo "[8] Etab scolaire : Ubuntu Mate 18.04/Mate"
+echo "[9] profil formateur/prof : Ubuntu 18.04/Gnome Shell"
+echo "[10] The FB Choice : Archlinux/Mate"
+echo "[11] The N62 Choice : Xubuntu/Xfce"
+echo "[12] Mode Pyshopathe (pour Archlinux)"
 echo "- - -"
-echo "[10] BionicBeaver - profil générique"
-echo "[11] Stretch - profil générique"
-echo "[12] Arch - profil générique"
+echo "[100] BionicBeaver - profil générique"
+echo "[101] Stretch - profil générique"
+echo "[102] Arch - profil générique"
 echo -e "================================"
 read -p "Choix : " choixProfil
 
 ##################################
 # Commun à tous - base Ubuntu 18.04
 ##################################
-if [ "$choixProfil" = "1" ] || [ "$choixProfil" = "5" ] || [ "$choixProfil" = "7" ] || [ "$choixProfil" = "10" ]
+if [ "$choixProfil" = "1" ] || [ "$choixProfil" = "5" ] || [ "$choixProfil" = "6" ] || [ "$choixProfil" = "8" ] || [ "$choixProfil" = "9" ] || [ "$choixProfil" = "11" ] || [ "$choixProfil" = "100" ]
 then
   export DEBIAN_FRONTEND="noninteractive" #permet d'automatiser l'installation de certains logiciels
   # activation dépot partenaire si ce n'est pas encore fait
@@ -61,7 +66,7 @@ fi
 ##################################
 # Commun à tous - base Debian 9
 ##################################
-if [ "$choixProfil" = "2" ] || [ "$choixProfil" = "6" ] || [ "$choixProfil" = "11" ]
+if [ "$choixProfil" = "2" ] || [ "$choixProfil" = "7" ] || [ "$choixProfil" = "101" ]
 then
   export DEBIAN_FRONTEND="noninteractive" #permet d'automatiser l'installation de certains logiciels
   # activation des dépots utiles
@@ -92,7 +97,7 @@ fi
 ##################################
 # Commun à tous - base Arch
 ##################################
-if [ "$choixProfil" = "3" ] || [ "$choixProfil" = "12" ]
+if [ "$choixProfil" = "3" ] || [ "$choixProfil" = "10" ] || [ "$choixProfil" = "12" ] || [ "$choixProfil" = "102" ]
 then  
   # nettoyage puis maj du système
   pacman --noconfirm -Sc
@@ -286,8 +291,19 @@ then
   pacman --noconfirm -Sc
 fi
 
-## spécifique profil 4 : plus tard
+## spécifique profil 4 : Solus/Budgie
 if [ "$choixProfil" = "4" ] 
+then
+
+
+#.....................................................
+
+
+fi
+
+
+## spécifique profil 5 : Mint/C
+if [ "$choixProfil" = "5" ] 
 then
 
 
@@ -305,8 +321,8 @@ then
 fi
 
 
-## spécifique profil 5 : Ubuntu avec Gnome Shell (technicien assistance)
-if [ "$choixProfil" = "5" ] 
+## spécifique profil 6 : Ubuntu avec Gnome Shell (technicien assistance)
+if [ "$choixProfil" = "6" ] 
 then
   #optimisation
   mv /snap /home/ && ln -s /home/snap /snap #déportage snappy dans /home pour alléger racine (/ et /home séparé)
@@ -360,8 +376,8 @@ then
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
-## spécifique profil 6 : Debian avec Xfce (technicien assistance)
-if [ "$choixProfil" = "6" ] 
+## spécifique profil 7 : Debian avec Xfce (technicien assistance)
+if [ "$choixProfil" = "7" ] 
 then
   #optimisation
   apt install snapd -y
@@ -401,8 +417,8 @@ then
 fi
 
 
-## spécifique profil 7 : Ubuntu Mate (etab scolaire)
-if [ "$choixProfil" = "7" ] 
+## spécifique profil 8 : Ubuntu Mate (etab scolaire)
+if [ "$choixProfil" = "8" ] 
 then
   apt install idle-python3.5 libreoffice-style-breeze sane -y
 
@@ -446,6 +462,76 @@ then
   #nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean -y  
 fi
+
+## spécifique profil 9 : Ubuntu avec GS (formateur/prof)
+if [ "$choixProfil" = "9" ] 
+then
+  gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' #comportement gnome
+  #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
+  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+  #cmd supplémentaire2 : pour contournement temporaire wayland pour des applis comme gparted... (ex utilisation : fraude gparted)
+  echo "#contournement wayland pour certaines applis
+  fraude(){ 
+    xhost + && sudo \$1 && xhost -
+    }" >> /home/$SUDO_USER/.bashrc
+    
+  apt install gnome-tweak-tool folder-color -y
+  apt install htop gparted ppa-purge unrar ubuntu-restricted-extras ffmpegthumbnailer -y
+  su $SUDO_USER ; source /home/$SUDO_USER/.bashrc ; exit
+  #bureautique
+  apt install libreoffice libreoffice-gtk libreoffice-l10n-fr pdfmod -y
+  flatpak install --from https://flathub.org/repo/appstream/com.github.philip_scott.notes-up.flatpakref -y
+  #scenari
+  echo "deb https://download.scenari.org/deb xenial main" > /etc/apt/sources.list.d/scenari.list
+  wget -O- https://download.scenari.org/deb/scenari.asc | apt-key add -
+  apt update && apt install scenarichain4.2.fr-fr opale3.6.fr-fr -y
+  #web
+  apt install adobe-flashplugin pidgin filezilla hexchat -y
+  #video/audio
+  apt install openshot audacity gnome-mpv -y
+  wget https://download.kde.org/unstable/kdenlive/16.12/linux/Kdenlive-16.12-rc-x86_64.AppImage
+  wget http://download.opensuse.org/repositories/home:/ocfreitag/AppImage/owncloud-client-latest-x86_64.AppImage
+  mkdir ./appimages ; mv *.AppImage ./appimages/ ; chmod -R +x ./appimages
+  #graphisme/photo
+  apt install gimp pinta inkscape shutter -y
+  #système
+  apt install gparted vim rar unrar htop gdebi -y
+  # dev
+  apt install geany -y
+  # utilitaires sup
+  apt install kazam virtualbox keepass2 screenfetch -y
+  # extension
+  apt install gnome-shell-extension-weather -y
+  
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
+fi
+
+## spécifique profil 10 : Arch/Mate F.B Choice
+if [ "$choixProfil" = "10" ] 
+then
+
+#........................
+
+fi
+
+## spécifique profil 11 : N62 choice
+if [ "$choixProfil" = "11" ] 
+then
+
+#........................
+
+fi
+
+## spécifique profil 12 : psychopathe (sous Arch)
+if [ "$choixProfil" = "12" ] 
+then
+
+
+fi
+
+
+
 
 
 if [ "$reboot" = "o" ] || [ "$reboot" = "O" ]
