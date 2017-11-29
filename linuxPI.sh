@@ -1,5 +1,5 @@
 #!/bin/bash
-# NE PAS UTILISER MERCI !
+# NE PAS UTILISER MERCI ! SCRIPT EN COURS DE DEV !
 
 
 if [ "$UID" -ne "0" ]
@@ -10,18 +10,18 @@ fi
 
 echo "Profil à utiliser : "
 echo -e "================================"
-echo "[1] profil Simon (1) : Ubuntu 18.04/Gnome Shell"
-echo "[2] profil Simon (2) : Debian 9/Xfce"
-echo "[3] profil Simon (3) : Archlinux/Xfce"
-echo "[4] profil Simon (4) : Solus/Budgie"
-echo "[5] profil Corinne : LinuxMint/Cinnamon"
-echo "[6] profil assistance rectorat (1) : Ubuntu 18.04LTS/Gnome Shell"
-echo "[7] profil assistance rectorat (2) : Debian 9/Xfce"
-echo "[8] Etab scolaire : Ubuntu Mate 18.04/Mate"
-echo "[9] profil formateur/prof : Ubuntu 18.04/Gnome Shell"
-echo "[10] The FB Choice : Archlinux/Mate"
-echo "[11] The N62 Choice : Xubuntu/Xfce"
-echo "[12] Mode Pyshopathe (pour Archlinux)"
+echo "[1] profil Simon (1) : Ubuntu 18.04/Gnome Shell [NON TESTÉ!]"
+echo "[2] profil Simon (2) : Debian 9/Xfce [NON TESTÉ!]"
+echo "[3] profil Simon (3) : Archlinux/Xfce [NON TESTÉ!]"
+echo "[4] profil Simon (4) : Solus/Budgie [NON TESTÉ!]"
+echo "[5] profil Corinne : LinuxMint/Cinnamon [NON TESTÉ!]"
+echo "[6] profil assistance rectorat (1) : Ubuntu 18.04LTS/Gnome Shell [NON TESTÉ!]"
+echo "[7] profil assistance rectorat (2) : Debian 9/Xfce [NON TESTÉ!]"
+echo "[8] Etab scolaire : Ubuntu Mate 18.04/Mate [NON TESTÉ!]"
+echo "[9] profil formateur/prof : Ubuntu 18.04/Gnome Shell [NON TESTÉ!]"
+echo "[10] The FB Mod (pour Archlinux/Mate) [NON TESTÉ!]"
+echo "[11] The N62 Mod (pour Xubuntu/Xfce) [NON TESTÉ!]"
+echo "[12] Mode Pyshopathe (pour Archlinux) [NON TESTÉ!]"
 echo "- - -"
 echo "[100] BionicBeaver - profil générique"
 echo "[101] Stretch - profil générique"
@@ -507,27 +507,69 @@ then
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
-## spécifique profil 10 : Arch/Mate F.B Choice
+## spécifique profil 10 : Arch/Mate FB MOD
 if [ "$choixProfil" = "10" ] 
 then
-
-#........................
-
+  #mate + extra
+  pacman --noconfirm -S pyrenamer calibre shotwell gimp xsane
+  pacman --noconfirm -S firefox chromium filezilla thunderbird transmission-gtk
+  #ajouter : discord
+  pacman --noconfirm -S gparted htop virtualbox brasero cheese deadbeef quodlibet easytag sound-juicer simple-screen-recorder
+  #ajouter : gnome-mpv + pamac
+  pacman --noconfirm -S handbrake mkvtoolnix-gui mc
+  #game
+  pacman --noconfirm -S quakespasm freedoom stone-soup
 fi
 
-## spécifique profil 11 : N62 choice
+## spécifique profil 11 : N62
+#source : https://dolys.fr/forums/topic/tuto-mon-optimisation-personnalisation-xubuntu-et-autres-variantes/
 if [ "$choixProfil" = "11" ] 
 then
+  apt install xfce4 gtk3-engines-xfce xfce4-goodies xfwm4-themes xubuntu-restricted-addons xubuntu-restricted-extras -y
+  apt install ppa-purge gedit gedit-plugins gksu gdebi -y
 
-#........................
+  # optimisation swap
+  echo vm.swappiness=5 | tee /etc/sysctl.d/99-sysctl.conf
+  echo vm.vfs_cache_pressure=50 | tee -a /etc/sysctl.d/99-sysctl.conf
+  sysctl -p /etc/sysctl.d/99-sysctl.conf
 
+  apt install gufw -y && systemctl enable ufw
+  apt install clamav clamtk qupzilla typecatcher gtk2-engines qbittorrent -y
+
+  apt install xscreensaver xscreensaver-data-extra xscreensaver-gl-extra xscreensaver-screensaver-bsod -y
+  apt remove light-locker -y
+
+  #compression/decompression
+  apt install unace rar unrar unar p7zip-rar p7zip zip unzip arj libuu0 mpack sharutils uudeview -y
+  #codec
+  apt install xine libdvdread4 icedax tagtool easytag id3tool lame nautilus-script-audio-convert libmad0 mpg321 libavcodec-extra -y
+
+  apt install shotwell rhythmbox openshot openshot-doc handbrake filezilla pinta -y
+  
+  #green record
+  add-apt-repository ppa:mhsabbagh/greenproject -y
+  apt update ; apt install green-recorder glabels -y
+  
+  #conky manager
+  add-apt-repository ppa:teejee2008/ppa -y && apt update && apt install conky-manager -y
+  
+  apt install gnome-disk-utility gparted backintime-gnome wine brasero synapse -y
+  
+  #look
+  apt install gnome-brave-icon-theme qt4-qtconfig docky -y
+  #supplément theme
+  add-apt-repository ppa:numix/ppa -y && apt update && apt install numix-icon-theme-circle -y
+  add-apt-repository ppa:oranchelo/oranchelo-icon-theme -y && apt update && apt install oranchelo-icon-theme -y
+  
+  apt install xfce4-mixer xbacklight xfce4-power-manager-plugins -y
+  apt install manpages-fr manpages-fr-extra -y
+  #finalisation
+  apt clean && apt update && apt full-upgrade -y && apt autoremove --purge -y 
 fi
 
 ## spécifique profil 12 : psychopathe (sous Arch)
 if [ "$choixProfil" = "12" ] 
 then
-
-
 fi
 
 
