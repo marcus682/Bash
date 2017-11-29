@@ -294,32 +294,92 @@ fi
 ## spécifique profil 4 : Solus/Budgie
 if [ "$choixProfil" = "4" ] 
 then
+  eopkg upgrade -y
+  eopkg install flatpak -y
+ 
 
+  #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
+  echo "alias maj='sudo eopkg upgrade -y && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+ 
+  eopkg install htop -y
+  
+  # ajout déveloper édition (indépendant)
+  flatpak install --from https://firefox-flatpak.mojefedora.cz/org.mozilla.FirefoxDevEdition.flatpakref -y
 
-#.....................................................
+  # outil web
+  eopkg install pidgin filezilla deluge grsync discord electrum -y
+  flatpak install --from https://flathub.org/repo/appstream/com.skype.Client.flatpakref -y
+  
+  # multimedia
+  eopkg install vlc gnome-twitch handbrake winff openshot-qt gradio avidemux -y
+  wget https://download.kde.org/unstable/kdenlive/16.12/linux/Kdenlive-16.12-rc-x86_64.AppImage
+  wget https://github.com/amilajack/popcorn-time-desktop/releases/download/v0.0.6/PopcornTime-0.0.6-x86_64.AppImage
+  mkdir ./appimages ; mv *.AppImage ./appimages/ ; chmod -R +x ./appimages
+ 
+  # graphisme/audio
+  eopkg install gimp pinta inkscape darktable audacity mixxx lame -y
+  
+  # supplément bureautique
+  eopkg install geary feedreader -y
+  flatpak install --from https://flathub.org/repo/appstream/com.github.philip_scott.notes-up.flatpakref -y
+  
+  # utilitaires sup
+  eopkg install virtualbox keepassx screenfetch asciinema ncdu screen rclone corebird -y
 
-
+  # dev
+  eopkg install emacs geany codeblocks -y
+  snap install pycharm-community --classic
+  
+  # gaming
+  eopkg install steam minetest supertux supertuxkart teeworlds -y
+  # Minecraft
+  wget https://raw.githubusercontent.com/sibe39/scripts_divers/master/install_minecraft.sh ; chmod +x install_minecraft.sh
+  ./install_minecraft.sh && rm install_minecraft.sh
+  
+  mv /snap /home/ && ln -s /home/snap /snap #déportage snappy dans /home pour alléger racine (/ et /home séparé)
+  
+  # nettoyage
+  eopkg delete-cache ; clear
 fi
-
 
 ## spécifique profil 5 : Mint/C
 if [ "$choixProfil" = "5" ] 
 then
+  sed -ri 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=2/g' /etc/default/grub && mkdir /boot/old && mv /boot/memtest86* /boot/old/ ; update-grub #pour grub
+  #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
+  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+  apt install htop gparted unrar
 
+  # autres navigateurs
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && apt update && apt install google-chrome-stable -y
 
+  # outil web
+  apt install pidgin filezilla deluge grsync subdownloader -y
+  snap install discord 
+  flatpak install --from https://flathub.org/repo/appstream/com.github.JannikHv.Gydl.flatpakref -y
+  wget https://repo.skype.com/latest/skypeforlinux-64.deb && dpkg -i skypeforlinux-64.deb ; apt install -fy ; rm skypeforlinux-64.deb
+  
+  # multimedia
+  apt install gnome-mpv quodlibet handbrake winff openshot -y
+  flatpak install --from https://flathub.org/repo/appstream/de.haeckerfelix.gradio.flatpakref -y
+  wget http://download.opensuse.org/repositories/home:/ocfreitag/AppImage/owncloud-client-latest-x86_64.AppImage
+  mkdir ./appimages ; mv *.AppImage ./appimages/ ; chmod -R +x ./appimages
 
+  # graphisme/audio
+  apt install sound-juicer pinta inkscape darktable audacity lame -y
+  
+  # supplément bureautique
+  apt install geary pdfmod -y
+  
+  # utilitaires sup
+  apt install keepassx screenfetch ncdu screen openssh-server -y
+ 
+  # gaming
+  apt install minecraft-installer minetest -y
 
-
-#.....................................................
-
-
-
-
-
-
-
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
-
 
 ## spécifique profil 6 : Ubuntu avec Gnome Shell (technicien assistance)
 if [ "$choixProfil" = "6" ] 
