@@ -631,12 +631,15 @@ fi
 ## spécifique profil 12 : psychopathe (sous Arch)
 if [ "$choixProfil" = "12" ] 
 then
+
+# blabalbalblbala
+
 fi
 
 
 
-
-
+echo "C'est fini ! Un reboot est nécessaire..."
+read -p "Voulez-vous redémarrer immédiatement ? [O/n] " reboot
 if [ "$reboot" = "o" ] || [ "$reboot" = "O" ]
 then
     reboot
