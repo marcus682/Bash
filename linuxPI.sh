@@ -192,7 +192,7 @@ then
   flatpak install --from https://flathub.org/repo/appstream/org.baedert.corebird.flatpakref -y
 
   # dev
-  apt install emacs geany codeblocks codeblocks-contrib 
+  apt install emacs geany codeblocks codeblocks-contrib -y 
   snap install pycharm-community --classic ; snap install atom --classic
   
   # gaming
@@ -245,7 +245,7 @@ then
   apt install kazam simplescreenrecorder keepassx screenfetch asciinema ncdu screen rclone corebird -y
 
   # dev
-  apt install emacs geany codeblocks codeblocks-contrib 
+  apt install emacs geany codeblocks codeblocks-contrib -y 
  
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
@@ -429,7 +429,7 @@ then
   apt install kazam virtualbox keepassx keepass2 screenfetch asciinema ncdu screen -y
 
   # dev
-  apt install geany codeblocks codeblocks-contrib 
+  apt install geany codeblocks codeblocks-contrib -y 
   snap install pycharm-community --classic 
  
   # nettoyage
@@ -469,7 +469,7 @@ then
   apt install kazam virtualbox keepassx keepass2 screenfetch asciinema ncdu screen -y
 
   # dev
-  apt install geany codeblocks codeblocks-contrib 
+  apt install geany codeblocks codeblocks-contrib -y
   snap install pycharm-community --classic 
  
   # nettoyage
