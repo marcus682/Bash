@@ -60,7 +60,7 @@ then
   # inutile dans tous les cas
   apt purge ubuntu-web-launchers -y #icone amazon
   # optimisation swap
-  echo vm.swappiness=5 | tee /etc/sysctl.d/99-swappiness.conf 
+  echo "vm.swappiness=5" > /etc/sysctl.d/99-swappiness.conf 
 fi
 
 ##################################
