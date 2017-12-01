@@ -50,11 +50,11 @@ then
   # codecs
   apt install x264 x265 -y
   # internet
-  apt install firefox firefox-locale-fr chromium-browser chromium-browser-l10n-fr pidgin transmission-gtk thunderbird thunderbird-locale-fr -y
+  apt install firefox firefox-locale-fr chromium-browser chromium-browser-l10n pidgin transmission-gtk thunderbird thunderbird-locale-fr -y
   # multimedia & graphisme
   apt install vlc gimp gimp-help-fr shutter -y
   # thème
-  apt install arc-thene numix-blue-gtk-theme numix-gtk-theme numix-icon-theme breeze-icon-theme breeze-cursor-theme -y
+  apt install arc-theme numix-blue-gtk-theme numix-gtk-theme numix-icon-theme breeze-icon-theme breeze-cursor-theme -y
   # désactivation message d'erreurs
   sed -i 's/^enabled=1$/enabled=0/' /etc/default/apport
   # inutile dans tous les cas
@@ -130,7 +130,8 @@ then
   mv /snap /home/ && ln -s /home/snap /snap #déportage snappy dans /home pour alléger racine (/ et /home séparé)
   swapoff /swapfile && rm /swapfile && sed -i -e '/.swapfile*/d' /etc/fstab #désactivation swap
   sed -ri 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=2/g' /etc/default/grub && mkdir /boot/old && mv /boot/memtest86* /boot/old/ ; update-grub #pour grub
-  gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' #comportement gnome
+  # Si DashToDock est installé
+  #gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' 
   
   #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
   echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
@@ -141,9 +142,9 @@ then
     xhost + && sudo \$1 && xhost -
     }" >> /home/$SUDO_USER/.bashrc
   
-  su $SUDO_USER ; source /home/$SUDO_USER/.bashrc ; exit
-     
-
+  su $SUDO_USER ; source ~/.bashrc ; exit
+  
+############ problème a partir de ce niveau là !!!
   apt install dconf-editor gnome-tweak-tool folder-color gnome-packagekit synaptic -y
   apt install htop gparted ppa-purge unrar ubuntu-restricted-extras ffmpegthumbnailer -y
   
