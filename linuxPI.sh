@@ -134,17 +134,16 @@ then
   #gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' 
   
   #cmd supplémentaire1 : pour toutes les maj (utilisation : maj)
-  echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
+  #echo "alias maj='sudo apt update && sudo apt autoremove --purge -y && sudo apt full-upgrade -y && sudo apt clean && sudo snap refresh && sudo flatpak update -y ; clear'" >> /home/$SUDO_USER/.bashrc
  
   #cmd supplémentaire2 : pour contournement temporaire wayland pour des applis comme gparted... (ex utilisation : fraude gparted)
-  echo "#contournement wayland pour certaines applis
-  fraude(){ 
-    xhost + && sudo \$1 && xhost -
-    }" >> /home/$SUDO_USER/.bashrc
+  #echo "#contournement wayland pour certaines applis
+  #fraude(){ 
+  #  xhost + && sudo \$1 && xhost -
+  #  }" >> /home/$SUDO_USER/.bashrc  
+  #su $SUDO_USER ; source ~/.bashrc ; exit
   
-  su $SUDO_USER ; source ~/.bashrc ; exit
-  
-############ problème a partir de ce niveau là !!!
+############ problème suite au su $sudo.... (trouver plus tard de quoi ça vient)
   apt install dconf-editor gnome-tweak-tool folder-color gnome-packagekit synaptic -y
   apt install htop gparted ppa-purge unrar ubuntu-restricted-extras ffmpegthumbnailer -y
   
