@@ -322,6 +322,58 @@ then
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
 
+# ----------------------------------------------------------------------------------------------------------------
+
+## spécifique profil 5 : Raphael.B (Ubuntu 16.04/Unity)
+if [ "$choixProfil" = "5" ] 
+then
+  #Alias Maj
+  echo "alias maj='sudo apt update && sudo apt full-upgrade && sudo apt autoremove --purge -y && sudo apt clean ; clear'" >> /home/$SUDO_USER/.bashrc
+ 
+  # Prise en compte de l'alias "maj"
+  su $SUDO_USER -c "source ~/.bashrc"
+   
+  # Outils utiles 
+  apt install unity-tweak-tool folder-color synaptic dmsetup diodon brasero xsane -y
+  
+  #rajouter plus tard : Shrew Soft VPN Access Manager (.ike)
+
+  #Truecrypt
+  add-apt-repository ppa:stefansundin/truecrypt -y ; apt update ; apt install truecrypt -y
+  
+  # Outil web
+  apt install hexchat pidgin filezilla grsync -y
+  
+  # Teamviewer 8 pour assistance
+  wget http://download.teamviewer.com/download/version_8x/teamviewer_linux.deb && dpkg -i teamviewer_linux.deb ; apt install -fy ; rm teamviewer_linux.deb 
+ 
+  # Graphisme/Video
+  apt install kazam pinta -y
+  
+  # Supplément bureautique
+  apt install zim keepass2 xournal
+ 
+  ## Programmation
+  #Scratch 2 cf https://forum-dane.ac-lyon.fr/forum/viewtopic.php?f=44&t=2122
+  
+  # Pilote
+  # imprimante :  imprimante dcp5890cn + imprimante travail
+  
+  #+maison : exit- xfca
+ 
+  # nettoyage
+  apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
+fi
+
+
+
+
+
+
+
+
+
+
 
 echo "C'est fini ! Un reboot est nécessaire..."
 read -p "Voulez-vous redémarrer immédiatement ? [O/n] " reboot
