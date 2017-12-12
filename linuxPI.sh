@@ -385,10 +385,10 @@ then
   wget http://download.brother.com/welcome/dlf006642/brscan3-0.2.13-1.amd64.deb ; dpkg -i brscan3-0.2.13-1.amd64.deb ; apt install -fy ; rm brscan3-0.2.13-1.amd64.deb
   
   # Scratch 2 (l'installation ne pouvant pas être totalement automatisé, elle est placé à la fin)
-  su $SUDO_USER -c "wget https://scratch.mit.edu/scratchr2/static/sa/Scratch-456.air ; chmod +x Scratch*"
+  wget https://scratch.mit.edu/scratchr2/static/sa/Scratch-455.air ; chmod +x Scratch* #nb: il y a la 456 mais elle semble poser problème
   wget https://raw.githubusercontent.com/dane-lyon/fichier-de-config/master/adobe-air.sh ; chmod +x adobe-air.sh
-  ./adobe-air.sh
-  /home/$SUDO_USER/Adobe\ AIR\ Application\ Installer
+  ./adobe-air.sh ; rm adobe-air.sh
+  Adobe\ AIR\ Application\ Installer #choisir manuellement le fichier "Scratch-455.air" et l'installer dans /opt/scratch
   
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
