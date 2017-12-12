@@ -365,6 +365,13 @@ then
  
   # Graphisme/Video
   apt install kazam pinta -y
+  # si besoin d'openshot dernière version stable => add-apt-repository ppa:openshot.developers/ppa -y && apt update && apt install openshot-qt -y
+  
+  # Scenari 4.1
+  echo "deb https://download.scenari.org/deb xenial main" > /etc/apt/sources.list.d/scenari.list
+  wget -O- https://download.scenari.org/deb/scenari.asc | apt-key add -
+  apt update ; apt install scenarichain4.1.fr-fr opale3.6.fr-fr -y
+  # si besoin de la 4.2 => apt install scenarichain4.2.fr-fr
   
   # Supplément bureautique
   apt install zim keepass2 xournal -y
