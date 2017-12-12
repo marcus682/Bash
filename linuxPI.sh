@@ -351,8 +351,9 @@ then
   # Outils utiles 
   apt install unity-tweak-tool synaptic dmsetup diodon brasero xsane sane -y
   
-  #rajouter plus tard : Shrew Soft VPN Access Manager (.ike)
-
+  #Shrew Soft VPN Access Manager (IKE)
+  apt install ike ike-qtgui -y
+  
   #Truecrypt
   add-apt-repository ppa:stefansundin/truecrypt -y ; apt update ; apt install truecrypt -y
   
@@ -385,16 +386,6 @@ then
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
-
-
-
-
-s
-
-
-
-
-
 
 echo "C'est fini ! Un reboot est nécessaire..."
 read -p "Voulez-vous redémarrer immédiatement ? [O/n] " reboot
