@@ -1,20 +1,23 @@
 #!/bin/bash
-# NE PAS UTILISER MERCI ! SCRIPT EN COURS DE DEV !
+## Version 1.0.1
 
+# Objectif du script : automatiser l'installation des logiciels, drivers suivant le profil de l'utilisateur, cadre perso, familiale ou professionnel.
 
+# Vérification que le script est lancé avec sudo (droit root nécessaire)
 if [ "$UID" -ne "0" ]
 then
   echo "Il faut etre root pour executer ce script ==> sudo ./script.sh"
   exit 
 fi 
 
+# Choix du profil pour l'utilisateur
 echo "Profil à utiliser : "
 echo -e "================================"
-echo "[1] profil Simon (1) [Perso] Ubuntu 18.04/Gnome Shell"
-echo "[2] profil Simon (2) [Perso] Archlinux/Xfce"
-echo "[3] profil Simon (3) [Travail] Ubuntu 18.04/Gnome Shell"
-echo "[4] profil Corinne : LinuxMint/Cinnamon"
-echo "[5] profil Raphael.B [Travail] Ubuntu 16.04/Unity"
+echo "[1] profil Simon (1) [Perso] Ubuntu 18.04/GS x64"
+echo "[2] profil Simon (2) [Perso] Archlinux/Xfce x64"
+echo "[3] profil Simon (3) [Travail] Ubuntu 18.04/GS x64"
+echo "[4] profil Corinne [Perso] : LinuxMint 18/Cinnamon x64"
+echo "[5] profil Raphael.B [Travail] Ubuntu 16.04/Unity x64"
 echo -e "================================"
 read -p "Choix : " choixProfil
 
@@ -285,6 +288,11 @@ then
   # Activation minimisation fenêtre pour DTD
   su $SUDO_USER -c "gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'"
  
+  ## Driver
+  # Imprimante du travail (Kyocera Taskalfa 3511i)
+  wget https://raw.githubusercontent.com/dane-lyon/fichier-de-config/master/Kyocera_taskalfa_3511i.PPD
+  mv Kyocera_taskalfa_3511i.PPD /etc/cups/ppd/
+  
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
@@ -317,6 +325,10 @@ then
   
   # Utilitaires sup
   apt install keepassx ncdu screen openssh-server unrar -y
+  
+  ## Driver
+  # Pour imprimante HP
+  apt install hplip hplip-gui sane
  
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
@@ -332,9 +344,12 @@ then
  
   # Prise en compte de l'alias "maj"
   su $SUDO_USER -c "source ~/.bashrc"
-   
+  
+  # Xcfa (X Convert File Audio) - mettre la ligne juste ci-dessous en commentaire si tu n'en n'a pas besoin
+  apt install cdparanoia cd-discid xcfa -y #(cdparanoia et cd-discid sont des dépendances nécessaires pour xcfa)
+  
   # Outils utiles 
-  apt install unity-tweak-tool folder-color synaptic dmsetup diodon brasero xsane -y
+  apt install unity-tweak-tool synaptic dmsetup diodon brasero xsane sane -y
   
   #rajouter plus tard : Shrew Soft VPN Access Manager (.ike)
 
@@ -344,23 +359,29 @@ then
   # Outil web
   apt install hexchat pidgin filezilla grsync -y
   
-  # Teamviewer 8 pour assistance
+  # Teamviewer 8 pour assistance académique
   wget http://download.teamviewer.com/download/version_8x/teamviewer_linux.deb && dpkg -i teamviewer_linux.deb ; apt install -fy ; rm teamviewer_linux.deb 
  
   # Graphisme/Video
   apt install kazam pinta -y
   
   # Supplément bureautique
-  apt install zim keepass2 xournal
- 
-  ## Programmation
-  #Scratch 2 cf https://forum-dane.ac-lyon.fr/forum/viewtopic.php?f=44&t=2122
+  apt install zim keepass2 xournal -y
+
+  ## Pilote
+  # Imprimante du travail (Kyocera Taskalfa 3511i)
+  wget https://raw.githubusercontent.com/dane-lyon/fichier-de-config/master/Kyocera_taskalfa_3511i.PPD
+  mv Kyocera_taskalfa_3511i.PPD /etc/cups/ppd/
+  # Imprimante perso dcp5890cn (mfc?)
+  wget http://download.brother.com/welcome/dlf006168/mfc5890cnlpr-1.1.2-2.i386.deb ; dpkg -i mfc5890cnlpr-1.1.2-2.i386.deb ; apt install -fy ; rm mfc5890cnlpr-1.1.2-2.i386.deb
+  wget http://download.brother.com/welcome/dlf006642/brscan3-0.2.13-1.amd64.deb ; dpkg -i brscan3-0.2.13-1.amd64.deb ; apt install -fy ; rm brscan3-0.2.13-1.amd64.deb
   
-  # Pilote
-  # imprimante :  imprimante dcp5890cn + imprimante travail
+  # Scratch 2 (l'installation ne pouvant pas être totalement automatisé, elle est placé à la fin)
+  su $SUDO_USER -c "wget https://scratch.mit.edu/scratchr2/static/sa/Scratch-456.air ; chmod +x Scratch*"
+  wget https://raw.githubusercontent.com/dane-lyon/fichier-de-config/master/adobe-air.sh ; chmod +x adobe-air.sh
+  ./adobe-air.sh
+  /home/$SUDO_USER/Adobe\ AIR\ Application\ Installer
   
-  #+maison : exit- xfca
- 
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
 fi
@@ -368,7 +389,7 @@ fi
 
 
 
-
+s
 
 
 
