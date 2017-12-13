@@ -1,5 +1,5 @@
 #!/bin/bash
-## Version 1.0.1
+## Version 1.0.2
 
 # Objectif du script : automatiser l'installation des logiciels, drivers suivant le profil de l'utilisateur, cadre perso, familiale ou professionnel.
 
@@ -352,7 +352,7 @@ then
   apt install cdparanoia cd-discid xcfa -y #(cdparanoia et cd-discid sont des dépendances nécessaires pour xcfa)
   
   # Outils utiles 
-  apt install unity-tweak-tool synaptic dmsetup diodon brasero xsane sane -y
+  apt install unity-tweak-tool synaptic dmsetup diodon brasero xsane sane virtualbox -y
   
   #Shrew Soft VPN Access Manager (IKE)
   apt install ike ike-qtgui -y
@@ -383,9 +383,11 @@ then
   # Imprimante du travail (Kyocera Taskalfa 3511i)
   wget https://raw.githubusercontent.com/dane-lyon/fichier-de-config/master/Kyocera_taskalfa_3511i.PPD
   mv Kyocera_taskalfa_3511i.PPD /etc/cups/ppd/
-  # Imprimante perso dcp5890cn (mfc?)
+  # Imprimante perso1 : MCF5890cn 
   wget http://download.brother.com/welcome/dlf006168/mfc5890cnlpr-1.1.2-2.i386.deb ; dpkg -i mfc5890cnlpr-1.1.2-2.i386.deb ; apt install -fy ; rm mfc5890cnlpr-1.1.2-2.i386.deb
   wget http://download.brother.com/welcome/dlf006642/brscan3-0.2.13-1.amd64.deb ; dpkg -i brscan3-0.2.13-1.amd64.deb ; apt install -fy ; rm brscan3-0.2.13-1.amd64.deb
+  # Imprimante perso2 : Lexmark mx511
+  wget http://www.openprinting.org/download/printdriver/debian/dists/lsb3.2/main/binary-amd64/openprinting-ppds-postscript-lexmark_20160218-1lsb3.2_all.deb ; dpkg -i openprinting* ; apt install -fy ; rm openprinting*
   
   # Scratch 2 (l'installation ne pouvant pas être totalement automatisé, elle est placé à la fin)
   wget https://scratch.mit.edu/scratchr2/static/sa/Scratch-455.air ; chmod +x Scratch* #nb: il y a la 456 mais elle semble poser problème
@@ -395,6 +397,11 @@ then
   
   # mBlock
   wget https://mblockdev.blob.core.chinacloudapi.cn/mblock-src/mBlock.deb ; dpkg -i mBlock.deb ; apt install -fy ; rm mBlock.deb
+  
+  # Thèmes
+  apt install arc-theme numix-blue-gtk-theme numix-gtk-theme numix-icon-theme breeze-icon-theme breeze-cursor-theme
+  git clone https://github.com/numixproject/numix-icon-theme-circle.git ; mv -f numix-icon-theme-circle/* /usr/share/icons/ ; rm -r numix-icon-theme-circle #numix circle icon
+  wget http://nux87.free.fr/script-postinstall-ubuntu/theme/papirus-icon-theme-20171124.tar.xz ; tar Jxvf papirus-icon-theme-20171124.tar.xz ; mv *Papirus* /usr/share/icons/ #papirus icon
   
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
