@@ -129,7 +129,10 @@ then
   apt install pidgin polari filezilla deluge grsync subdownloader -y
   snap install discord ; snap install electrum --classic
   flatpak install --from https://flathub.org/repo/appstream/com.github.JannikHv.Gydl.flatpakref -y #Gydl
-
+  
+  #Webtorrent
+  wget https://github.com/webtorrent/webtorrent-desktop/releases/download/v0.18.0/webtorrent-desktop_0.18.0-1_amd64.deb ; dpkg -i webtorrent-desktop_0.18.0-1_amd64.deb ; apt install -fy ; rm webtorrent-desktop_0.18.0-1_amd64.deb
+  
   # Multimedia
   apt install gnome-mpv quodlibet gnome-twitch handbrake winff openshot -y
   flatpak install --from https://flathub.org/repo/appstream/de.haeckerfelix.gradio.flatpakref -y #Gradio
