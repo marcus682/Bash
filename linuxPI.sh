@@ -367,7 +367,7 @@ then
   wget http://download.teamviewer.com/download/version_8x/teamviewer_linux.deb && dpkg -i teamviewer_linux.deb ; apt install -fy ; rm teamviewer_linux.deb 
  
   # Graphisme/Video
-  apt install kazam pinta -y
+  apt install kazam pinta shutter -y
   # si besoin d'openshot dernière version stable => add-apt-repository ppa:openshot.developers/ppa -y && apt update && apt install openshot-qt -y
   
   # Scenari 4.1
@@ -392,6 +392,9 @@ then
   wget https://raw.githubusercontent.com/dane-lyon/fichier-de-config/master/adobe-air.sh ; chmod +x adobe-air.sh
   ./adobe-air.sh ; rm adobe-air.sh
   Adobe\ AIR\ Application\ Installer #choisir manuellement le fichier "Scratch-455.air" et l'installer dans /opt/scratch
+  
+  # mBlock
+  wget https://mblockdev.blob.core.chinacloudapi.cn/mblock-src/mBlock.deb ; dpkg -i mBlock.deb ; apt install -fy ; rm mBlock.deb
   
   # nettoyage
   apt install -fy ; apt autoremove --purge -y ; apt clean ; clear
